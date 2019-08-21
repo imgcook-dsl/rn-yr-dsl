@@ -1,13 +1,12 @@
 'use strict';
 
-import { createElement, Component, render } from 'rax';
-
-{{{import}}}
-
-{{{style}}}
+import { View, StyleSheet, Text, Image} from 'react-native';
+import React from "react";
 
 {{{mockData}}}
 
 {{{modClass}}}
 
 {{{export}}}
+
+{{{style}}}

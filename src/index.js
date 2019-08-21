@@ -63,6 +63,9 @@ module.exports = function(layoutData, options) {
 
 					delete json.style.fontFamily;
 					delete json.style.lines;
+					delete json.style.letterSpacing;
+					delete json.style.whiteSpace;
+					delete json.style.textOverflow;
 					break;
 				case 'view':
 					if (json.children && json.children.length > 0) {
@@ -131,7 +134,7 @@ module.exports = function(layoutData, options) {
 		.join('\n');
 	renderData.mockData = `var mock = ${JSON.stringify(mock)}`;
 	renderData.export = `render(<Mod dataSource={mock} />);`;
-	renderData.style = `const styles = StyleSheet.create({ ${JSON.stringify(style)} })`;
+	renderData.style = `const styles = StyleSheet.create(${JSON.stringify(style)});`;
 
 	const prettierOpt = {
 		printWidth: 120,
