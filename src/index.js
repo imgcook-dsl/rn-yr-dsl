@@ -61,11 +61,22 @@ module.exports = function(layoutData, options) {
 						delete json.style.height;
 					}
 
-					delete json.style.fontFamily;
+					if (json.style.lineHeight) {
+						var lineHeight = json.style.lineHeight;
+						lineHeight = lineHeight.replace(/(rem)|(px)/, '');
+						json.style.lineHeight = Number(lineHeight);
+					}
+					if (json.style.fontWeight) {
+						var fontWeight = json.style.fontWeight;
+						json.style.fontWeight = fontWeight + '';
+
+					}
+
 					delete json.style.lines;
-					delete json.style.letterSpacing;
+					delete json.style.fontFamily;
 					delete json.style.whiteSpace;
 					delete json.style.textOverflow;
+					delete json.style.letterSpacing;
 					break;
 				case 'view':
 					if (json.children && json.children.length > 0) {
@@ -78,6 +89,9 @@ module.exports = function(layoutData, options) {
 					if (!raxImport[type]) {
 						raxImport[type] = `import {View} from 'react-native';`;
 					}
+
+					delete json.style.display;
+					delete json.style.backgroundImage;
 					break;
 				case 'picture':
 					var source;
