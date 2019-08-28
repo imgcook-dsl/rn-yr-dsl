@@ -29,6 +29,7 @@ module.exports = function(layoutData, options) {
 
 	function json2jsx(json) {
 		var result = '';
+		mock = generateMockData(mock);
 
 		if (!!json.length && typeof json != 'string') {
 			json.forEach(function(node) {
@@ -91,6 +92,8 @@ module.exports = function(layoutData, options) {
 					}
 
 					delete json.style.display;
+					delete json.style.boxSizing;
+					delete json.style.boxShadow;
 					delete json.style.backgroundImage;
 					break;
 				case 'picture':
@@ -122,6 +125,42 @@ module.exports = function(layoutData, options) {
 
 		return result;
 	}
+
+
+	function generateMockData(mockData) {
+		let targetMockObject = {};
+		for (let _o in mockData) {
+			targetMockObject[_o] = _deepMock({}, mockData[_o]);
+		}
+		return targetMockObject;
+	}
+
+	function _deepMock(targetObj, sourceObj) {
+		let targetObjStore = targetObj;
+		for (let _o in sourceObj) {
+			let _oArr = _utilsStringToArr(_o);
+			let _len = _oArr.length;
+			_oArr.forEach((_v, _i) => {
+				if (_i == _len - 1) {
+					targetObj[_v] = sourceObj[_o];
+				} else {
+					targetObj[_v] = {};
+					targetObj = targetObj[_v];
+				}
+			});
+			targetObj = targetObjStore;
+		}
+		return targetObjStore;
+	}
+
+	function _utilsStringToArr(string) {
+		let arr = [];
+		string = string.replace(/\]/g, '');
+		string = string.replace(/\]/g, '.');
+		arr = string.split('.');
+		return arr;
+	}
+
 
 	// transform json
 	var jsx = `${json2jsx(layoutData)}`;
